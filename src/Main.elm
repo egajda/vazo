@@ -4,6 +4,7 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Http
 import Url
 import Url.Parser exposing ((</>), Parser, int, map, oneOf, s, string)
 
@@ -39,7 +40,30 @@ type Page
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model key url HomePage, Cmd.none )
+    ( Model key url HomePage
+    , Nav.pushUrl key (Url.toString url)
+    )
+
+
+updateUrl : Url.Url -> Model -> ( Model, Cmd Msg )
+updateUrl url model =
+    case Url.Parser.parse routeParser url of
+        Just (Fund _) ->
+            ( { key = model.key, url = url, page = FundsPage }, Cmd.none )
+
+        Just (User _) ->
+            ( { key = model.key, url = url, page = UsersPage }, Cmd.none )
+
+        Nothing ->
+            case url.path of
+                "/funds/" ->
+                    ( { key = model.key, url = url, page = FundsPage }, Cmd.none )
+
+                "/users/" ->
+                    ( { key = model.key, url = url, page = UsersPage }, Cmd.none )
+
+                _ ->
+                    ( { key = model.key, url = url, page = HomePage }, Cmd.none )
 
 
 
@@ -63,9 +87,7 @@ update msg model =
                     ( model, Nav.load href )
 
         UrlChanged url ->
-            ( { model | url = url }
-            , Cmd.none
-            )
+            updateUrl url model
 
 
 
@@ -80,8 +102,8 @@ type Route
 routeParser : Parser (Route -> a) a
 routeParser =
     oneOf
-        [ map Fund (s "fund" </> string)
-        , map User (s "user" </> string)
+        [ map Fund (s "/fund/" </> string)
+        , map User (s "/user/" </> string)
         ]
 
 
@@ -104,23 +126,24 @@ view model =
         HomePage ->
             { title = "Pennydrop"
             , body =
-                [ viewHeader HomePage
-                , text "Home"
+                [ viewHeader FundsPage
+                , text (Url.toString model.url)
                 ]
             }
 
         FundsPage ->
-            { title = "Pennydrop"
+            { title = "Funds"
             , body =
                 [ viewHeader FundsPage
-                , text "Fund"
+                , text model.url.path
                 ]
             }
 
         UsersPage ->
-            { title = "Pennydrop"
+            { title = "Users"
             , body =
-                [ text "Fund"
+                [ viewHeader UsersPage
+                , text model.url.path
                 ]
             }
 
@@ -131,10 +154,21 @@ viewHeader page =
         logo =
             h1 [] [ text "PennyDrop" ]
 
+        stuff =
+            case page of
+                FundsPage ->
+                    [ text "Funds" ]
+
+                UsersPage ->
+                    [ text "Users" ]
+
+                HomePage ->
+                    [ text "HomePage" ]
+
         links =
             ul []
-                [ navLink FundsPage { url = "/funds", caption = "Funds" }
-                , navLink UsersPage { url = "/users", caption = "Users" }
+                [ navLink FundsPage { url = "/funds/", caption = "Funds" }
+                , navLink UsersPage { url = "/users/", caption = "Users" }
                 ]
 
         navLink : Page -> { url : String, caption : String } -> Html msg
