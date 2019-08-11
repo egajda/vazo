@@ -1,5 +1,4 @@
-# Pennydrop
-Drop a penny, change a life
+# Vazo
 
 ## Getting Started
 ### Install deps:

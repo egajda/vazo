@@ -153,7 +153,7 @@ viewHeader : Page -> Html msg
 viewHeader page =
     let
         logo =
-            h1 [] [ text "PennyDrop" ]
+            a [ class "navbar-item", href "/" ] [ img [ src "img/vazo.png" ] [] ]
 
         stuff =
             case page of
@@ -177,4 +177,18 @@ viewHeader page =
             li [ classList [ ( "active", page == targetPage ) ] ]
                 [ a [ href url ] [ text caption ] ]
     in
-    nav [ classList [ ( "navbar", True ), ( "is-primary", True ) ] ] [ logo, links ]
+    nav [ class "navbar is-warning", attribute "role" "navigation", attribute "aria-label" "main navigation" ]
+        [ div [ class "navbar-brand" ]
+            [ logo
+            , a [ class "navbar-burger burger", attribute "role" "button", attribute "aria-label" "menu", attribute "aria-expanded" "false", attribute "data-target" "navbarBasicExample" ]
+                [ span [ attribute "aria-hidden" "true" ] []
+                , span [ attribute "aria-hidden" "true" ] []
+                , span [ attribute "aria-hidden" "true" ] []
+                ]
+            ]
+        , div [ class "navbar-menu" ]
+            [ a [ class "navbar-item " ] [ text "Home" ]
+            , a [ class "navbar-item" ] [ text "Funds" ]
+            , a [ class "navbar-item" ] [ text "Users" ]
+            ]
+        ]
