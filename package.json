@@ -5,7 +5,7 @@
     "elm-live": "^3.4.1"
   },
   "scripts": {
-    "server": "elm-live src/Main.elm --pushstate",
+    "server": "elm-live src/Main.elm -u -s index.html -- --output=app.js --debug",
     "s": "yarn run server",
     "fmt": "elm-format"
   }

@@ -126,7 +126,8 @@ view model =
         HomePage ->
             { title = "Pennydrop"
             , body =
-                [ viewHeader FundsPage
+                [ node "link" [ rel "stylesheet", href "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css" ] []
+                , viewHeader FundsPage
                 , text (Url.toString model.url)
                 ]
             }
@@ -167,8 +168,8 @@ viewHeader page =
 
         links =
             ul []
-                [ navLink FundsPage { url = "/funds/", caption = "Funds" }
-                , navLink UsersPage { url = "/users/", caption = "Users" }
+                [ navLink FundsPage { url = "/funds", caption = "Funds" }
+                , navLink UsersPage { url = "/users", caption = "Users" }
                 ]
 
         navLink : Page -> { url : String, caption : String } -> Html msg
@@ -176,4 +177,4 @@ viewHeader page =
             li [ classList [ ( "active", page == targetPage ) ] ]
                 [ a [ href url ] [ text caption ] ]
     in
-    nav [] [ logo, links ]
+    nav [ classList [ ( "navbar", True ), ( "is-primary", True ) ] ] [ logo, links ]
