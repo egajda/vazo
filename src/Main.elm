@@ -124,10 +124,9 @@ view : Model -> Browser.Document Msg
 view model =
     case model.page of
         HomePage ->
-            { title = "Pennydrop"
+            { title = "Vazo"
             , body =
-                [ node "link" [ rel "stylesheet", href "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css" ] []
-                , viewHeader FundsPage
+                [ viewHeader HomePage
                 , text (Url.toString model.url)
                 ]
             }
@@ -153,7 +152,18 @@ viewHeader : Page -> Html msg
 viewHeader page =
     let
         logo =
-            a [ class "navbar-item", href "/" ] [ img [ src "img/vazo.png" ] [] ]
+            a [ class "navbar-item", href "/" ] [ img [ src "/img/vazo.png", attribute "width" "72", attribute "height" "108" ] [] ]
+
+        navisactive =
+            case page of
+                HomePage ->
+                    False
+
+                UsersPage ->
+                    True
+
+                FundsPage ->
+                    True
 
         stuff =
             case page of
@@ -177,18 +187,28 @@ viewHeader page =
             li [ classList [ ( "active", page == targetPage ) ] ]
                 [ a [ href url ] [ text caption ] ]
     in
-    nav [ class "navbar is-warning", attribute "role" "navigation", attribute "aria-label" "main navigation" ]
+    nav [ class "navbar is-info is-active", attribute "role" "navigation", attribute "aria-label" "main navigation" ]
         [ div [ class "navbar-brand" ]
             [ logo
-            , a [ class "navbar-burger burger", attribute "role" "button", attribute "aria-label" "menu", attribute "aria-expanded" "false", attribute "data-target" "navbarBasicExample" ]
+            , a [ class "navbar-burger burger is-active", attribute "role" "button", attribute "aria-label" "menu", attribute "aria-expanded" "false", attribute "data-target" "navbarBasic" ]
                 [ span [ attribute "aria-hidden" "true" ] []
                 , span [ attribute "aria-hidden" "true" ] []
                 , span [ attribute "aria-hidden" "true" ] []
                 ]
             ]
-        , div [ class "navbar-menu" ]
-            [ a [ class "navbar-item " ] [ text "Home" ]
-            , a [ class "navbar-item" ] [ text "Funds" ]
-            , a [ class "navbar-item" ] [ text "Users" ]
+        , div [ classList [ ( "navbar-menu", True ), ( "is-active", navisactive ) ], attribute "id" "navbarBasic" ]
+            [ div [ class "navbar-start" ]
+                [ a [ class "navbar-item " ] [ text "Home" ]
+                , a [ class "navbar-item" ] [ text "Funds" ]
+                , a [ class "navbar-item" ] [ text "Users" ]
+                ]
+            , div [ class "navbar-end" ]
+                [ div [ class "navbar-item" ]
+                    [ div [ class "buttons" ]
+                        [ a [ class "button" ] [ text "sign up" ]
+                        , a [ class "button" ] [ text "Log in" ]
+                        ]
+                    ]
+                ]
             ]
         ]
