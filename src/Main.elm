@@ -4,6 +4,7 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 import Http
 import Url
 import Url.Parser exposing ((</>), Parser, int, map, oneOf, s, string)
@@ -29,6 +30,7 @@ type alias Model =
     { key : Nav.Key
     , url : Url.Url
     , page : Page
+    , active_nav : Bool
     }
 
 
@@ -40,7 +42,7 @@ type Page
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model key url HomePage
+    ( Model key url HomePage False
     , Nav.pushUrl key (Url.toString url)
     )
 
@@ -49,21 +51,21 @@ updateUrl : Url.Url -> Model -> ( Model, Cmd Msg )
 updateUrl url model =
     case Url.Parser.parse routeParser url of
         Just (Fund _) ->
-            ( { key = model.key, url = url, page = FundsPage }, Cmd.none )
+            ( { key = model.key, url = url, page = FundsPage, active_nav = False }, Cmd.none )
 
         Just (User _) ->
-            ( { key = model.key, url = url, page = UsersPage }, Cmd.none )
+            ( { key = model.key, url = url, page = UsersPage, active_nav = False }, Cmd.none )
 
         Nothing ->
             case url.path of
-                "/funds/" ->
-                    ( { key = model.key, url = url, page = FundsPage }, Cmd.none )
+                "/funds" ->
+                    ( { key = model.key, url = url, page = FundsPage, active_nav = False }, Cmd.none )
 
-                "/users/" ->
-                    ( { key = model.key, url = url, page = UsersPage }, Cmd.none )
+                "/users" ->
+                    ( { key = model.key, url = url, page = UsersPage, active_nav = False }, Cmd.none )
 
                 _ ->
-                    ( { key = model.key, url = url, page = HomePage }, Cmd.none )
+                    ( { key = model.key, url = url, page = HomePage, active_nav = False }, Cmd.none )
 
 
 
@@ -73,6 +75,7 @@ updateUrl url model =
 type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
+    | NavToggled
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -88,6 +91,14 @@ update msg model =
 
         UrlChanged url ->
             updateUrl url model
+
+        NavToggled ->
+            case model.active_nav of
+                True ->
+                    ( { model | active_nav = False }, Cmd.none )
+
+                False ->
+                    ( { model | active_nav = True }, Cmd.none )
 
 
 
