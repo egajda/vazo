@@ -139,7 +139,7 @@ view model =
             , body =
                 [ div [ class "layout-documentation page-columns" ]
                     [ viewHeader HomePage model.active_nav
-                    , text (Url.toString model.url)
+                    , viewHome model
                     ]
                 ]
             }
@@ -187,9 +187,10 @@ viewHeader page active_nav =
     in
     div [ class "container" ]
         [ nav
-            [ class "navbar has-shadow is-spaced"
+            [ class "navbar has-shadow is-spaced is-fixed-top"
             , attribute "role" "navigation"
             , attribute "aria-label" "main navigation"
+            , attribute "style" "transition: all 0.3s ease 0s;"
             ]
             [ div [ class "navbar-brand" ]
                 [ logo
@@ -217,11 +218,50 @@ viewHeader page active_nav =
                     ]
                 , div [ class "navbar-end" ]
                     [ div [ class "navbar-item" ]
-                        [ div [ class "buttons" ]
-                            [ a [ class "is-primary button" ] [ text "Sign up" ]
-                            , a [ class "is-light button" ] [ text "Log in" ]
+                        [ div [ class "field is-grouped" ]
+                            [ p [ class "control has-icons-left is-hidden-touch" ]
+                                [ input [ class "input", attribute "type" "text", attribute "placeholder" "Search...", attribute "style" "width: 200px" ]
+                                    [ span [ class "icon is-left" ]
+                                        [ i [ class "fas fa-search" ] [] ]
+                                    ]
+                                ]
+                            , p [ class "control" ]
+                                [ a [ class "button", href "/login" ] [ span [ class "icon" ] [ i [ class "fas fa-sign-in-alt" ] [] ], span [] [ text "Login" ] ]
+                                ]
+                            , p [ class "control" ]
+                                [ a [ class "is-primary button", href "/register" ] [ span [ class "icon" ] [ i [ class "fas fa-user-plus" ] [] ], span [] [ text "Register" ] ]
+                                ]
                             ]
                         ]
+                    ]
+                ]
+            ]
+        ]
+
+
+viewHome : Model -> Html Msg
+viewHome model =
+    section [ class "hero is-medium is-bold" ]
+        [ div [ class "hero-body" ]
+            [ div [ class "container" ]
+                [ br [] []
+                , div [ class "columns" ]
+                    [ div [ class "column" ]
+                        [ h1 [ class "title" ] [ text "Vazo" ]
+                        , h2 [ class "subtitle" ] [ text "Making it easier to share" ]
+                        ]
+                    , div [ class "column " ]
+                        [ img [ src "https://oldfirstucc.org/wp-content/uploads/2014/11/jar.jpg" ] [] ]
+                    ]
+                ]
+            ]
+        , section [ class "hero is-small is-primary is-bold" ]
+            [ div [ class "hero-body" ]
+                [ div [ class "container" ]
+                    [ br [] []
+                    , h1
+                        [ class "title" ]
+                        [ text "Featured Funds" ]
                     ]
                 ]
             ]
@@ -269,13 +309,15 @@ viewFunds model =
                 , div [ class "content" ] [ text "Greg's college tuition (read beer money)", br [] [], time [] [ text "11:09PM - 1 Jan 2020" ] ]
                 ]
     in
-    div
-        [ class "section" ]
-        [ h1 [ class "title" ] [ text "Funds" ]
-        , row
-        , row
-        , row
-        , row
+    div [ class "section" ]
+        [ div
+            [ class "bd-main-container container" ]
+            [ h1 [ class "title" ] [ text "Funds" ]
+            , row
+            , row
+            , row
+            , row
+            ]
         ]
 
 
@@ -331,9 +373,11 @@ viewUsers model =
                 ]
     in
     div [ class "section" ]
-        [ h1 [ class "title" ] [ text "Users" ]
-        , row
-        , row
-        , row
-        , row
+        [ div [ class "bd-main-container container" ]
+            [ h1 [ class "title" ] [ text "Users" ]
+            , row
+            , row
+            , row
+            , row
+            ]
         ]
