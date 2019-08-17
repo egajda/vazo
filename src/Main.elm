@@ -38,6 +38,7 @@ type Page
     = HomePage
     | FundsPage
     | UsersPage
+    | RegisterPage
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
@@ -63,6 +64,9 @@ updateUrl url model =
 
                 "/users" ->
                     ( { key = model.key, url = url, page = UsersPage, active_nav = False }, Cmd.none )
+
+                "/register" ->
+                    ( { key = model.key, url = url, page = RegisterPage, active_nav = False }, Cmd.none )
 
                 _ ->
                     ( { key = model.key, url = url, page = HomePage, active_nav = False }, Cmd.none )
@@ -138,8 +142,7 @@ view model =
             { title = "Vazo"
             , body =
                 [ div [ class "layout-documentation page-columns" ]
-                    [ viewHeader HomePage model.active_nav
-                    , viewHome model
+                    [ viewHome model
                     ]
                 ]
             }
@@ -160,6 +163,16 @@ view model =
                 [ div [ class "layout-documentation page-columns" ]
                     [ viewHeader UsersPage model.active_nav
                     , viewUsers model
+                    ]
+                ]
+            }
+
+        RegisterPage ->
+            { title = "Register"
+            , body =
+                [ div [ class "layout-documentation page-columns" ]
+                    [ viewHeader RegisterPage model.active_nav
+                    , viewRegister model
                     ]
                 ]
             }
@@ -187,7 +200,7 @@ viewHeader page active_nav =
     in
     div [ class "container" ]
         [ nav
-            [ class "navbar has-shadow is-spaced is-fixed-top"
+            [ class "navbar is-white has-shadow is-spaced "
             , attribute "role" "navigation"
             , attribute "aria-label" "main navigation"
             , attribute "style" "transition: all 0.3s ease 0s;"
@@ -239,32 +252,91 @@ viewHeader page active_nav =
         ]
 
 
+viewRegister : Model -> Html Msg
+viewRegister model =
+    section [ class "hero is-fullheight" ]
+        [ div [ class "hero-body" ]
+            [ div [ class "container" ]
+                [ div [ class "columns is-centered" ]
+                    [ div [ class "column is-5-tablet is-4-desktop is-3-widescreen" ]
+                        [ text "Register" ]
+                    ]
+                ]
+            ]
+        ]
+
+
 viewHome : Model -> Html Msg
 viewHome model =
     section [ class "hero is-medium is-bold" ]
-        [ div [ class "hero-body" ]
-            [ div [ class "container" ]
-                [ br [] []
-                , div [ class "columns" ]
-                    [ div [ class "column" ]
-                        [ h1 [ class "title" ] [ text "Vazo" ]
-                        , h2 [ class "subtitle" ] [ text "Making it easier to share" ]
+        [ div [ class "hero-head" ] [ viewHeader HomePage model.active_nav ]
+        , div [ class "hero-body" ]
+            [ div [ class "container has-text-centered" ]
+                [ div [ class "columns" ]
+                    [ div [ class "column is-offset-3 is-6" ]
+                        [ h1 [ class "title" ] [ text "Improve your community one penny at a time" ]
+                        , h2 [ class "subtitle" ] [ text "To change the world you gotta start local. We supercharge communities by connecting people, incentivizing collaboration and making it easier to help each other" ]
                         ]
                     , div [ class "column " ]
-                        [ h1 [ class "title" ] [ text "Featured Fund" ]
-                        , img [ src "https://oldfirstucc.org/wp-content/uploads/2014/11/jar.jpg" ] []
-                        , h2 [ class "subtitle" ] [ text "First fund" ]
+                        [ img [ attribute "style" "position: relative; top: 3rem; ", src "/img/header.svg" ] []
                         ]
                     ]
                 ]
             ]
-        , section [ class "hero is-small is-primary is-bold" ]
-            [ div [ class "hero-body" ]
+        , section [ attribute "style" "background: #f7f6f6", class "hero is-small is-primary " ]
+            [ div [ class "hero-body", attribute "style" "padding-top: 40px;" ]
                 [ div [ class "container" ]
-                    [ br [] []
-                    , h1
-                        [ class "title" ]
-                        [ text "Featured Funds" ]
+                    [ label
+                        [ class "has-text-grey title" ]
+                        [ text "Designed to be..." ]
+                    , br [] []
+                    , br [] []
+                    , br [] []
+                    , br [] []
+                    , br [] []
+                    , div [ class "columns " ]
+                        [ div [ class "column is-4" ]
+                            [ div [ class "card is-shady" ]
+                                [ div [ class "card-image has-text-centered" ]
+                                    [ img [ attribute "style" "padding: 5rem;", class "image ", src "/img/network.svg" ] []
+                                    , div [ class "card-content" ]
+                                        [ div [ class "content" ]
+                                            [ h1 [ class "has-text-black title" ] [ text "Shared" ]
+                                            , p [ class "has-text-black" ] [ text "Alone we are mediocre at best. Together we are unstoppable! The web has an insane power to bring us together. Let's channel that into a force of good!" ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        , div [ class "column is-4" ]
+                            [ div [ class "card is-shady" ]
+                                [ div [ class "card-image has-text-centered" ]
+                                    [ img [ attribute "style" "padding: 5rem;", class "image ", src "/img/school.svg" ] []
+                                    , div [ class "card-content" ]
+                                        [ div [ class "content" ]
+                                            [ h1 [ class "has-text-black title" ] [ text "Impactful" ]
+                                            , p [ class "has-text-black" ]
+                                                [ text "Who knows which organizations are making the biggest impact in your communities better than you? Whether its your schools, religious institutions or local youth-sports teams, you have the power to support and nuture whoever you choose." ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        , div [ class "column is-4" ]
+                            [ div [ class "card is-shady" ]
+                                [ div [ class "card-image has-text-centered" ]
+                                    [ img [ attribute "style" "padding: 5rem;", class "image ", src "/img/padlock.svg" ] []
+                                    , div [ class "card-content" ]
+                                        [ div [ class "content" ]
+                                            [ h1 [ class "has-text-black title" ] [ text "Secure" ]
+                                            , p [ class "has-text-black" ]
+                                                [ text "It wouldn't be the homepage of a tech company without a padlock. People should be rewarded for giving, not repaid with their sensitive information stored as plaintext. Industry best practices and a genuine concern for our users drives every decision we make, so no we don't use an algorithm my grandma can hack." ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]
