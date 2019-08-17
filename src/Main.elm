@@ -152,6 +152,7 @@ view model =
             , body =
                 [ div [ class "layout-documentation page-columns" ]
                     [ viewHeader FundsPage model.active_nav
+                    , banner model
                     , viewFunds model
                     ]
                 ]
@@ -184,9 +185,8 @@ viewHeader page active_nav =
         logo =
             a [ class "navbar-item", href "/" ]
                 [ img
-                    [ src "/img/vazo.png"
-                    , attribute "width" "72"
-                    , attribute "height" "108"
+                    [ src "/img/Logo2.png"
+                    , attribute "style" "max-height: 2.5rem;"
                     ]
                     []
                 ]
@@ -245,6 +245,26 @@ viewHeader page active_nav =
                                 [ a [ class "is-primary button", href "/register" ] [ span [ class "icon" ] [ i [ class "fas fa-user-plus" ] [] ], span [] [ text "Register" ] ]
                                 ]
                             ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+
+banner : Model -> Html Msg
+banner model =
+    section [ attribute "style" "margin-top: 3px;", class "hero is-info is-small" ]
+        [ div [ class "hero-body" ]
+            [ div [ class "container has-text-centered" ]
+                [ div [ class "columns" ]
+                    [ div [ class "column" ]
+                        [ h1 [ class "is-size-1" ] [ text "Funds" ] ]
+                    ]
+                , div [ class "columns " ]
+                    [ div [ attribute "style" "padding-down: 3rem;", class "column" ]
+                        [ p [ class "is-size-4" ]
+                            [ text "See who is making money moves near you" ]
                         ]
                     ]
                 ]
