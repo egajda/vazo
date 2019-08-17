@@ -363,6 +363,45 @@ viewHome model =
         ]
 
 
+filter : Html msg
+filter =
+    div []
+        [ aside [ class "menu is-hidden-mobile" ]
+            [ h6 [ class "is-size-4 title" ] [ text "Filter" ]
+            , p [ class "menu-label" ]
+                [ text "Category" ]
+            , ul [ class "menu-list" ]
+                [ li []
+                    [ a [ class "is-active" ]
+                        [ text "All Funds" ]
+                    ]
+                ]
+            , p [ class "menu-label" ]
+                [ text "Location" ]
+            , ul [ class "menu-list" ]
+                [ li []
+                    [ a []
+                        [ text "Everywhere" ]
+                    ]
+                , li []
+                    [ a []
+                        [ text "Michigan" ]
+                    , ul []
+                        [ li []
+                            [ a []
+                                [ text "Detroit" ]
+                            ]
+                        , li []
+                            [ a []
+                                [ text "Ann Arbor" ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+
 viewFunds : Model -> Html Msg
 viewFunds model =
     let
@@ -407,11 +446,15 @@ viewFunds model =
     div [ class "section" ]
         [ div
             [ class "bd-main-container container" ]
-            [ h1 [ class "title" ] [ text "Funds" ]
-            , row
-            , row
-            , row
-            , row
+            [ div [ class "columns" ]
+                [ div [ class "column is-3" ] [ filter ]
+                , div [ class "column is-9" ]
+                    [ row
+                    , row
+                    , row
+                    , row
+                    ]
+                ]
             ]
         ]
 
