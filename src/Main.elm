@@ -171,9 +171,8 @@ view model =
         RegisterPage ->
             { title = "Register"
             , body =
-                [ div [ class "layout-documentation page-columns" ]
-                    [ viewHeader RegisterPage model.active_nav
-                    , viewRegister model
+                [ div []
+                    [ viewRegister model
                     ]
                 ]
             }
@@ -274,12 +273,42 @@ banner model =
 
 viewRegister : Model -> Html Msg
 viewRegister model =
-    section [ class "hero is-fullheight" ]
+    section [ class "hero is-alt is-fullheight" ]
         [ div [ class "hero-body" ]
             [ div [ class "container" ]
-                [ div [ class "columns is-centered" ]
-                    [ div [ class "column is-5-tablet is-4-desktop is-3-widescreen" ]
-                        [ text "Register" ]
+                [ article [ class "card is-rounded", attribute "style" "max-width: 30rem;" ]
+                    [ div [ class "card-content" ]
+                        [ h1 [ class "title" ]
+                            [ img [ alt "Vazo", src "/img/Logo2.png", attribute "width" "114" ]
+                                []
+                            ]
+                        , p [ class "control has-icon" ]
+                            [ input [ class "input", placeholder "Email", type_ "email" ]
+                                []
+                            , i [ class "fa fa-envelope" ]
+                                []
+                            ]
+                        , p [ class "control has-icon" ]
+                            [ input [ class "input", placeholder "Password", type_ "password" ]
+                                []
+                            , i [ class "fa fa-lock" ]
+                                []
+                            ]
+                        , p [ class "control" ]
+                            [ label [ class "checkbox" ]
+                                [ input [ type_ "checkbox" ]
+                                    []
+                                , text "Remember me                "
+                                ]
+                            ]
+                        , p [ class "control" ]
+                            [ button [ class "button is-primary is-medium is-fullwidth" ]
+                                [ i [ class "fa fa-user" ]
+                                    []
+                                , text "Login                "
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]
